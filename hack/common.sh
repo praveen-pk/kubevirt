@@ -148,3 +148,9 @@ function format_archname() {
         esac
     fi
 }
+
+#refrence https://github.com/kubevirt/kubevirt/commit/860f8e42fe39da8770942fb1a75bdf36787cd179
+if ! git config --global --get safe.directory | grep -q ${KUBEVIRT_DIR}; then
+	git config --global --add safe.directory ${KUBEVIRT_DIR}
+fi
+

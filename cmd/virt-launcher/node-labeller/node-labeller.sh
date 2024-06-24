@@ -19,7 +19,6 @@ set -o pipefail
 
 VIRTTYPE=qemu
 
-
 if [ ! -e /dev/kvm ] && [ -n "$KVM_MINOR" ]; then
   mknod /dev/kvm c 10 $KVM_MINOR
 fi
@@ -36,11 +35,11 @@ fi
 
 virtqemud -d
 
-virsh domcapabilities --machine $MACHINE --arch $ARCH --virttype $VIRTTYPE > /var/lib/kubevirt-node-labeller/virsh_domcapabilities.xml
+virsh -c qemu:///system domcapabilities --machine $MACHINE --arch $ARCH --virttype $VIRTTYPE > /var/lib/kubevirt-node-labeller/virsh_domcapabilities.xml
 
 # hypervisor-cpu-baseline command only works on x86
 if [ "$ARCH" == "x86_64" ]; then
-   virsh domcapabilities --machine $MACHINE --arch $ARCH --virttype $VIRTTYPE | virsh hypervisor-cpu-baseline --features /dev/stdin --machine $MACHINE --arch $ARCH --virttype $VIRTTYPE > /var/lib/kubevirt-node-labeller/supported_features.xml
+   virsh -c qemu:///system domcapabilities --machine $MACHINE --arch $ARCH --virttype $VIRTTYPE | virsh -c qemu:///system hypervisor-cpu-baseline --features /dev/stdin --machine $MACHINE --arch $ARCH --virttype $VIRTTYPE > /var/lib/kubevirt-node-labeller/supported_features.xml
 fi
 
-virsh capabilities > /var/lib/kubevirt-node-labeller/capabilities.xml
+virsh -c qemu:///system capabilities > /var/lib/kubevirt-node-labeller/capabilities.xml

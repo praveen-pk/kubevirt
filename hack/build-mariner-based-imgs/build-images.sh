@@ -22,7 +22,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 DOCKER_BUILDKIT=1 docker build -t afo-builder -f $SCRIPT_DIR/Dockerfile-builder $SCRIPT_DIR
 
 export DOCKER_PREFIX='kubevirt'
-export DOCKER_TAG="devel"
+export DOCKER_TAG="al3-qemu"
 
 # Building generic containers that are not dependent on the VMM
 for ctr in virt-operator virt-api virt-handler virt-controller; do
